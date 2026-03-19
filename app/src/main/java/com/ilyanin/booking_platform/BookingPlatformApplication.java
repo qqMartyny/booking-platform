@@ -1,4 +1,4 @@
-package com.ilyanin.booking_platform.app;
+package com.ilyanin.booking_platform;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
