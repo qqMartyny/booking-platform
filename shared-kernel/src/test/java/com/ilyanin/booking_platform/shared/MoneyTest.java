@@ -2,7 +2,6 @@ package com.ilyanin.booking_platform.shared;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
 
 import java.math.BigDecimal;
 import java.util.Currency;
