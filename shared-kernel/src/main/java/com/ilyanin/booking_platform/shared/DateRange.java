@@ -23,7 +23,7 @@ public record DateRange(
     }
 
     public boolean contains(LocalDate date) {
-        return !date.isBefore(startDate) || !date.isAfter(endDate);
+        return !date.isBefore(startDate) && !date.isAfter(endDate);
             
     }
 
