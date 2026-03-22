@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.ilyanin.booking_platform.booking.domain.event.BookingCreatedEvent;
 import com.ilyanin.booking_platform.booking.domain.event.DomainEvent;
 import com.ilyanin.booking_platform.shared.DateRange;
 import com.ilyanin.booking_platform.shared.Money;
@@ -45,6 +46,23 @@ public class Booking {
         Money totalPrice
     ) {
 
-        return new Booking(roomId, guestId, roomId, dateRange, null, totalPrice, null);
+        UUID id = UUID.randomUUID();
+        BookingStatus status = BookingStatus.PENDING;
+        LocalDateTime createdAt = LocalDateTime.now();
+        
+        Booking booking = new Booking(
+            id,
+            guestId,
+            roomId,
+            dateRange,
+            status,
+            totalPrice,
+            createdAt
+        );
+
+        booking.domainEvents.add(new BookingCreatedEvent());
+        return booking;
     }
+
+    
 }
