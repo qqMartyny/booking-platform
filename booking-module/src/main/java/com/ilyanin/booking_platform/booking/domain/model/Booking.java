@@ -102,4 +102,32 @@ public class Booking {
         
         this.status = newStatus;
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public UUID getGuestId() {
+        return guestId;
+    }
+
+    public UUID getRoomId() {
+        return roomId;
+    }
+
+    public DateRange getDateRange() {
+        return dateRange;
+    }
+
+    public Money getTotalPrice() {
+        return totalPrice;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public BookingStatus getStatus() {
+        return status;
+    }
 }
