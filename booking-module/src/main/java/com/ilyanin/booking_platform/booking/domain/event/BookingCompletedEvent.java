@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import com.ilyanin.booking_platform.shared.event.DomainEvent;
 
-public class BookingCreatedEvent implements DomainEvent{
+public class BookingCompletedEvent implements DomainEvent{
 
     @Override
     public LocalDateTime occurredAt() {

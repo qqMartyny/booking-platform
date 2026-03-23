@@ -5,11 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.ilyanin.booking_platform.booking.domain.event.BookingApprovedEvent;
+import com.ilyanin.booking_platform.booking.domain.event.BookingCancelledEvent;
+import com.ilyanin.booking_platform.booking.domain.event.BookingChangeRequestedEvent;
+import com.ilyanin.booking_platform.booking.domain.event.BookingCompletedEvent;
 import com.ilyanin.booking_platform.booking.domain.event.BookingCreatedEvent;
-import com.ilyanin.booking_platform.booking.domain.event.DomainEvent;
+import com.ilyanin.booking_platform.booking.domain.event.BookingRejectedEvent;
 import com.ilyanin.booking_platform.shared.DateRange;
 import com.ilyanin.booking_platform.shared.Money;
-
+import com.ilyanin.booking_platform.shared.event.DomainEvent;
 public class Booking {
 
     private final UUID id;
@@ -64,5 +68,38 @@ public class Booking {
         return booking;
     }
 
-    
+    public void approve() {
+        transitionTo(BookingStatus.APPROVED);
+        domainEvents.add(new BookingApprovedEvent());
+    }
+
+    public void cancel() {
+        transitionTo(BookingStatus.CANCELLED);
+        domainEvents.add(new BookingCancelledEvent());
+    }
+
+    public void reject() {
+        transitionTo(BookingStatus.REJECTED);
+        domainEvents.add(new BookingRejectedEvent());
+    }
+
+    public void complete() {
+        transitionTo(BookingStatus.COMPLETED);
+        domainEvents.add(new BookingCompletedEvent());
+    }
+
+    public void changeRequest() {
+        transitionTo(BookingStatus.CHANGE_REQUESTED);
+        domainEvents.add(new BookingChangeRequestedEvent());
+    }
+
+    private void transitionTo(BookingStatus newStatus) {
+        if (!status.canTransitionTo(newStatus)) {
+            throw new IllegalStateException(
+                "Cannot make transition from " + status + " to " + newStatus
+            );
+        }
+        
+        this.status = newStatus;
+    }
 }

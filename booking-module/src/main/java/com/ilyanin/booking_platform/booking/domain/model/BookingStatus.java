@@ -1,6 +1,7 @@
 package com.ilyanin.booking_platform.booking.domain.model;
 
 public enum BookingStatus {
+    
     PENDING {
         @Override
         public boolean canTransitionTo(BookingStatus next) {
