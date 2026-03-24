@@ -105,12 +105,12 @@ public class Booking {
         domainEvents.add(new BookingCompletedEvent(id));
     }
 
-    public void changeRequest() {
+    public void changeRequest(DateRange newDateRange) {
         transitionTo(BookingStatus.CHANGE_REQUESTED);
         domainEvents.add(new BookingChangeRequestedEvent(
             id,
             guestId,
-            dateRange
+            newDateRange
         ));
     }
 
