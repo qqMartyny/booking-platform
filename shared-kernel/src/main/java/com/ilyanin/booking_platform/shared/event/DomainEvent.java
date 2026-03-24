@@ -6,24 +6,24 @@ import java.util.UUID;
 public abstract class DomainEvent {
 
     private final UUID eventId;
-    private final UUID agregateId;
-    private final LocalDateTime occuredAt;
+    private final UUID aggregateId;
+    private final LocalDateTime occurredAt;
 
-    protected DomainEvent(UUID agregateId) {
+    protected DomainEvent(UUID aggregateId) {
         this.eventId = UUID.randomUUID();
-        this.agregateId = agregateId;
-        this.occuredAt = LocalDateTime.now();
+        this.aggregateId = aggregateId;
+        this.occurredAt = LocalDateTime.now();
     }
 
     public UUID getEventId() {
         return eventId;
     }
 
-    public UUID getAgregateId() {
-        return agregateId;
+    public UUID getaggregateId() {
+        return aggregateId;
     }
 
-    public LocalDateTime getOccuredAt() {
-        return occuredAt;
+    public LocalDateTime getoccurredAt() {
+        return occurredAt;
     }
 }
