@@ -1,28 +1,30 @@
 package com.ilyanin.booking_platform.booking.domain.event;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.ilyanin.booking_platform.shared.DateRange;
 import com.ilyanin.booking_platform.shared.event.DomainEvent;
 
-public class BookingChangeRequestedEvent implements DomainEvent{
+public class BookingChangeRequestedEvent extends DomainEvent {
 
-    @Override
-    public LocalDateTime occurredAt() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'occurredAt'");
+    private final UUID guestId;
+    private final DateRange dateRange;
+
+    public BookingChangeRequestedEvent(
+        UUID aggregateId, 
+        UUID guestId,
+        DateRange dateRange
+    ) {
+        super(aggregateId);
+        this.guestId = guestId;
+        this.dateRange = dateRange;
     }
 
-    @Override
-    public UUID aggregateId() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'aggregateId'");
+    public UUID getGuestId() {
+        return guestId;
     }
 
-    @Override
-    public UUID eventId() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eventId'");
+    public DateRange getDateRange() {
+        return dateRange;
     }
-
 }

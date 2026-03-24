@@ -64,33 +64,54 @@ public class Booking {
             createdAt
         );
 
-        booking.domainEvents.add(new BookingCreatedEvent());
+        booking.domainEvents.add(new BookingCreatedEvent(
+            id,
+            guestId,
+            roomId,
+            dateRange,
+            totalPrice    
+        ));
         return booking;
     }
 
     public void approve() {
         transitionTo(BookingStatus.APPROVED);
-        domainEvents.add(new BookingApprovedEvent());
+        domainEvents.add(new BookingApprovedEvent(
+            id,
+            guestId,
+            roomId,
+            dateRange
+        ));
     }
 
     public void cancel() {
         transitionTo(BookingStatus.CANCELLED);
-        domainEvents.add(new BookingCancelledEvent());
+        domainEvents.add(new BookingCancelledEvent(
+            id,
+            guestId
+        ));
     }
 
     public void reject() {
         transitionTo(BookingStatus.REJECTED);
-        domainEvents.add(new BookingRejectedEvent());
+        domainEvents.add(new BookingRejectedEvent(
+            id,
+            guestId
+        ));
     }
 
     public void complete() {
         transitionTo(BookingStatus.COMPLETED);
-        domainEvents.add(new BookingCompletedEvent());
+        domainEvents.add(new BookingCompletedEvent(id));
     }
 
     public void changeRequest() {
         transitionTo(BookingStatus.CHANGE_REQUESTED);
-        domainEvents.add(new BookingChangeRequestedEvent());
+        domainEvents.add(new BookingChangeRequestedEvent(
+            id,
+            guestId,
+            dateRange
+        ));
     }
 
     private void transitionTo(BookingStatus newStatus) {
