@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.ilyanin.booking_platform.booking.domain.exception.BookingNotFoundException;
 import com.ilyanin.booking_platform.booking.domain.model.Booking;
 import com.ilyanin.booking_platform.booking.domain.model.BookingStatus;
 import com.ilyanin.booking_platform.booking.domain.port.in.BookingSearchFilter;
 import com.ilyanin.booking_platform.booking.domain.port.out.BookingRepositoryPort;
 import com.ilyanin.booking_platform.shared.DateRange;
 import com.ilyanin.booking_platform.shared.PageResult;
-
-import jakarta.persistence.EntityNotFoundException;
 
 public class BookingRepositoryAdapter implements BookingRepositoryPort{
 
@@ -32,13 +31,7 @@ public class BookingRepositoryAdapter implements BookingRepositoryPort{
 
     @Override
     public Optional<Booking> findById(UUID id) {
-        BookingJpaEntity entity = repository.findById(id)
-            .orElseThrow(
-                () -> new EntityNotFoundException(
-                    "Booking with id " + id + " is not found"
-                )
-            );
-        return Optional.ofNullable(mapper.toDomain(entity));
+        return repository.findById(id).map(mapper::toDomain);
     }
 
     @Override
