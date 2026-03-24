@@ -63,6 +63,7 @@ public class BookingService implements
             );
         
         booking.reject();
+        repository.save(booking);
         eventPublisher.publishAll(booking.pullDomainEvents());
 
         return booking;
@@ -107,6 +108,7 @@ public class BookingService implements
             );
         
         booking.complete();
+        repository.save(booking);
         eventPublisher.publishAll(booking.pullDomainEvents());
 
         return booking;
@@ -120,7 +122,7 @@ public class BookingService implements
                 )
             );
         
-        if (!roomAvailability.isAvailable(booking.getRoomId(), booking.getDateRange())) {
+        if (!roomAvailability.isAvailable(booking.getRoomId(), newDateRange)) {
             throw new IllegalStateException(
                 "Room " + booking.getRoomId() 
                 + " is not available while period " 
@@ -128,7 +130,7 @@ public class BookingService implements
             );
         }   
         
-        booking.changeRequest();
+        booking.changeRequest(newDateRange);
         repository.save(booking);
         eventPublisher.publishAll(booking.pullDomainEvents());
 
@@ -144,6 +146,7 @@ public class BookingService implements
             );
         
         booking.cancel();
+        repository.save(booking);
         eventPublisher.publishAll(booking.pullDomainEvents());
 
         return booking;
@@ -158,7 +161,7 @@ public class BookingService implements
             );
 
         List<Booking> conflicts = repository.findConflicting(
-            bookingId, 
+            booking.getRoomId(), 
             booking.getDateRange(), 
             BookingStatus.APPROVED);
         
