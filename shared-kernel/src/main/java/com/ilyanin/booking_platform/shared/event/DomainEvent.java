@@ -19,11 +19,11 @@ public abstract class DomainEvent {
         return eventId;
     }
 
-    public UUID getaggregateId() {
+    public UUID getAggregateId() {
         return aggregateId;
     }
 
-    public LocalDateTime getoccurredAt() {
+    public LocalDateTime getOccurredAt() {
         return occurredAt;
     }
 }
