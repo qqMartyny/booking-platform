@@ -9,13 +9,9 @@ public abstract class DomainEvent {
     private final UUID agregateId;
     private final LocalDateTime occuredAt;
 
-    protected DomainEvent(
-        UUID eventId, 
-        UUID agregateId, 
-        LocalDateTime occuredAt
-    ) {
-        this.eventId = eventId;
+    protected DomainEvent(UUID agregateId) {
+        this.eventId = UUID.randomUUID();
         this.agregateId = agregateId;
-        this.occuredAt = occuredAt;
+        this.occuredAt = LocalDateTime.now();
     }
 }
