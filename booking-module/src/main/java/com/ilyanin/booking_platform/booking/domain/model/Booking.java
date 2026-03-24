@@ -124,6 +124,10 @@ public class Booking {
         this.status = newStatus;
     }
 
+    public List<DomainEvent> pullDomainEvents() {
+        return this.domainEvents;
+    }
+
     public UUID getId() {
         return id;
     }
