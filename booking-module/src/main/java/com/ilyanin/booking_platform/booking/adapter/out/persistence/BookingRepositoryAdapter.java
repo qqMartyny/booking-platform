@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.ilyanin.booking_platform.booking.domain.exception.BookingNotFoundException;
 import com.ilyanin.booking_platform.booking.domain.model.Booking;
 import com.ilyanin.booking_platform.booking.domain.model.BookingStatus;
 import com.ilyanin.booking_platform.booking.domain.port.in.BookingSearchFilter;
