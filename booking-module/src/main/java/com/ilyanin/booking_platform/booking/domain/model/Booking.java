@@ -74,6 +74,18 @@ public class Booking {
         return booking;
     }
 
+    public static Booking reconstitute(
+        UUID id,
+        UUID guestId, 
+        UUID roomId, 
+        DateRange dateRange, 
+        Money totalPrice,
+        BookingStatus status,
+        LocalDateTime createdAt
+    ){
+        return new Booking(id, guestId, roomId, dateRange, status, totalPrice, createdAt);
+    }
+
     public void approve() {
         transitionTo(BookingStatus.APPROVED);
         domainEvents.add(new BookingApprovedEvent(
