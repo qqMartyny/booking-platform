@@ -1,8 +1,8 @@
 package com.ilyanin.booking_platform.booking.domain.port.in;
 
 import com.ilyanin.booking_platform.booking.domain.model.Booking;
-import com.ilyanin.booking_platform.booking.domain.service.BookingSearchFilter;
+import com.ilyanin.booking_platform.shared.PageResult;
 
 public interface SearchBookingsUseCase {
-    Booking searchBookings(BookingSearchFilter filter);
+    PageResult<Booking> searchBookings(BookingSearchFilter filter);
 }
