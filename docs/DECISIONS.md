@@ -251,8 +251,8 @@ Booking публикует событие, Notification подписываетс
 - [x] Определены границы модулей
 - [x] Выбрана архитектурная стратегия (Modular Monolith → Strangler Fig)
 - [x] Определены паттерны проектирования и места их применения
-- [ ] Реализован shared-kernel
-- [ ] Реализован booking-module
+- [x] Реализован shared-kernel
+- [x] Реализован booking-module
 - [ ] Реализован property-module
 - [ ] Реализован user-module
 - [ ] Реализован notification-module
