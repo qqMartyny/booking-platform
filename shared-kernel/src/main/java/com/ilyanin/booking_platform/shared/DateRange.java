@@ -8,14 +8,6 @@ public record DateRange(
     LocalDate endDate
 ){
 
-    public LocalDate startDate() {
-        return startDate;
-    }
-
-    public LocalDate endDate() {
-        return endDate;
-    }
-
     public DateRange {
         if (!startDate.isBefore(endDate)) {
             throw new IllegalArgumentException(
