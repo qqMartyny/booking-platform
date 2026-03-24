@@ -125,7 +125,9 @@ public class Booking {
     }
 
     public List<DomainEvent> pullDomainEvents() {
-        return this.domainEvents;
+        List<DomainEvent> events = List.copyOf(domainEvents);
+        domainEvents.clear();
+        return events;
     }
 
     public UUID getId() {
