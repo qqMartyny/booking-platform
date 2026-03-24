@@ -14,4 +14,16 @@ public abstract class DomainEvent {
         this.agregateId = agregateId;
         this.occuredAt = LocalDateTime.now();
     }
+
+    public UUID getEventId() {
+        return eventId;
+    }
+
+    public UUID getAgregateId() {
+        return agregateId;
+    }
+
+    public LocalDateTime getOccuredAt() {
+        return occuredAt;
+    }
 }
