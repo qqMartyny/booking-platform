@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.ilyanin.booking_platform.booking.domain.exception.BookingNotFoundException;
 import com.ilyanin.booking_platform.booking.domain.model.Booking;
 import com.ilyanin.booking_platform.booking.domain.model.BookingStatus;
 import com.ilyanin.booking_platform.booking.domain.port.in.ApproveBookingUseCase;
@@ -22,8 +23,6 @@ import com.ilyanin.booking_platform.booking.domain.port.out.RoomAvailabilityPort
 import com.ilyanin.booking_platform.shared.DateRange;
 import com.ilyanin.booking_platform.shared.Money;
 import com.ilyanin.booking_platform.shared.PageResult;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class BookingService implements
@@ -57,9 +56,7 @@ public class BookingService implements
     public Booking reject(UUID bookingId) {
         Booking booking = repository.findById(bookingId)
             .orElseThrow(
-                () -> new EntityNotFoundException(
-                    "Booking with id " + bookingId + " is not found"
-                )
+                () -> new BookingNotFoundException(bookingId)
             );
         
         booking.reject();
@@ -72,9 +69,7 @@ public class BookingService implements
     public Booking get(UUID bookingId) {
         Booking booking = repository.findById(bookingId)
             .orElseThrow(
-                () -> new EntityNotFoundException(
-                    "Booking with id " + bookingId + " is not found"
-                )
+                () -> new BookingNotFoundException(bookingId)
             ); 
         
         return booking;
@@ -102,9 +97,7 @@ public class BookingService implements
     public Booking complete(UUID bookingId) {
         Booking booking = repository.findById(bookingId)
             .orElseThrow(
-                () -> new EntityNotFoundException(
-                    "Booking with id " + bookingId + " is not found"
-                )
+                () -> new BookingNotFoundException(bookingId)
             );
         
         booking.complete();
@@ -117,9 +110,7 @@ public class BookingService implements
     public Booking changeRequest(UUID bookingId, DateRange newDateRange) {
         Booking booking = repository.findById(bookingId)
             .orElseThrow(
-                () -> new EntityNotFoundException(
-                    "Booking with id " + bookingId + " is not found"
-                )
+                () -> new BookingNotFoundException(bookingId)
             );
         
         if (!roomAvailability.isAvailable(booking.getRoomId(), newDateRange)) {
@@ -140,9 +131,7 @@ public class BookingService implements
     public Booking cancel(UUID bookingId) {
         Booking booking = repository.findById(bookingId)
             .orElseThrow(
-                () -> new EntityNotFoundException(
-                    "Booking with id " + bookingId + " is not found"
-                )
+                () -> new BookingNotFoundException(bookingId)
             );
         
         booking.cancel();
@@ -155,9 +144,7 @@ public class BookingService implements
     public Booking approve(UUID bookingId) {
         Booking booking = repository.findById(bookingId)
             .orElseThrow(
-                () -> new EntityNotFoundException(
-                    "Booking with id " + bookingId + " is not found"
-                )
+                () -> new BookingNotFoundException(bookingId)
             );
 
         List<Booking> conflicts = repository.findConflicting(
