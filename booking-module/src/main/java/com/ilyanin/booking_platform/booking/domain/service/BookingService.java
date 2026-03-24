@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.ilyanin.booking_platform.booking.domain.event.BookingApprovedEvent;
 import com.ilyanin.booking_platform.booking.domain.model.Booking;
 import com.ilyanin.booking_platform.booking.domain.model.BookingStatus;
 import com.ilyanin.booking_platform.booking.domain.port.in.ApproveBookingUseCase;
