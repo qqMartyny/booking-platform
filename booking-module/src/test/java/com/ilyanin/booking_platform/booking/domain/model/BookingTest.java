@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
+import com.ilyanin.booking_platform.booking.BookingFixtures;
 import com.ilyanin.booking_platform.booking.domain.event.BookingCreatedEvent;
 import com.ilyanin.booking_platform.shared.DateRange;
 import com.ilyanin.booking_platform.shared.Money;
@@ -18,19 +19,10 @@ import com.ilyanin.booking_platform.shared.event.DomainEvent;
 
 public class BookingTest {
 
-    private Booking createTestBooking() {
-        return Booking.create(
-            UUID.randomUUID(),
-            UUID.randomUUID(),
-            new DateRange(LocalDate.now().plusDays(1), LocalDate.now().plusDays(5)),
-            new Money(BigDecimal.valueOf(500), Currency.getInstance("USD"))
-        );
-    }
-
     @Test
     void shouldCreateBookingWithPendingStatus() {
 
-        var booking = createTestBooking();
+        var booking = BookingFixtures.defaultBooking();
 
         assertThat(booking.getStatus()).isEqualTo(BookingStatus.PENDING);
     }
@@ -38,7 +30,7 @@ public class BookingTest {
     @Test
     void shouldGenerateEventWhenCreated() {
 
-        var booking = createTestBooking();
+        var booking = BookingFixtures.defaultBooking();
 
         List<DomainEvent> events = booking.pullDomainEvents();
 
@@ -49,7 +41,7 @@ public class BookingTest {
     @Test
     void shouldThrowExceptionWhenIllegalTransition() {
 
-        var booking = createTestBooking();
+        var booking = BookingFixtures.defaultBooking();
 
         assertThatThrownBy(() -> booking.complete())    
             .isInstanceOf(IllegalStateException.class)
@@ -64,7 +56,7 @@ public class BookingTest {
     @Test
     void shouldApproveBooking() {
         
-        var booking = createTestBooking();
+        var booking = BookingFixtures.defaultBooking();
 
         booking.approve();
 
@@ -74,7 +66,7 @@ public class BookingTest {
     @Test
     void shouldClearDomainEventList() {
 
-        var booking = createTestBooking();
+        var booking = BookingFixtures.defaultBooking();
 
         booking.pullDomainEvents();
 
@@ -86,7 +78,7 @@ public class BookingTest {
     @Test
     void shouldCancelApprovedBooking() {
 
-        var booking = createTestBooking();
+        var booking = BookingFixtures.defaultBooking();
 
         booking.approve();
         booking.cancel();
