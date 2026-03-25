@@ -1,10 +1,6 @@
 package com.ilyanin.booking_platform.booking.domain.model;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Currency;
 import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -13,8 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import com.ilyanin.booking_platform.booking.BookingFixtures;
 import com.ilyanin.booking_platform.booking.domain.event.BookingCreatedEvent;
-import com.ilyanin.booking_platform.shared.DateRange;
-import com.ilyanin.booking_platform.shared.Money;
 import com.ilyanin.booking_platform.shared.event.DomainEvent;
 
 public class BookingTest {

@@ -11,6 +11,7 @@ import com.ilyanin.booking_platform.shared.Money;
 
 public class BookingFixtures {
 
+    public static final UUID BOOKING_ID = UUID.randomUUID();
     public static final UUID GUEST_ID = UUID.randomUUID();
     public static final UUID ROOM_ID = UUID.randomUUID();
     
