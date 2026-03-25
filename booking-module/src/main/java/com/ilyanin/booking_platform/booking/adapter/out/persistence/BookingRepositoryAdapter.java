@@ -35,8 +35,15 @@ public class BookingRepositoryAdapter implements BookingRepositoryPort{
 
     @Override
     public List<Booking> findConflicting(UUID roomId, DateRange dateRange, BookingStatus status) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findConflicting'");
+        return repository.findConflicting(
+            roomId, 
+            dateRange.startDate(), 
+            dateRange.endDate(), 
+            status
+        )
+            .stream()
+            .map(mapper::toDomain)
+            .toList();
     }
 
     @Override
