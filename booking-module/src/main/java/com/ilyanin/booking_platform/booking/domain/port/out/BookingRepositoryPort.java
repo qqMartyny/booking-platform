@@ -13,6 +13,7 @@ import com.ilyanin.booking_platform.shared.PageResult;
 public interface BookingRepositoryPort {
     Booking save(Booking booking);
     Optional<Booking> findById(UUID id);
+    Optional<Booking> findByIdForUpdate(UUID id);    
     List<Booking> findConflicting(
         UUID roomId, 
         DateRange dateRange, 

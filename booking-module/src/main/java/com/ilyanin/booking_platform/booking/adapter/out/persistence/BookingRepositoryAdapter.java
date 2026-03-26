@@ -90,5 +90,10 @@ public class BookingRepositoryAdapter implements BookingRepositoryPort{
             filter.pageSize(), 
             page.getTotalElements());
     }
+
+    @Override
+    public Optional<Booking> findByIdForUpdate(UUID id) {
+        return repository.findByIdForUpdate(id).map(mapper::toDomain);
+    }
     
 }
