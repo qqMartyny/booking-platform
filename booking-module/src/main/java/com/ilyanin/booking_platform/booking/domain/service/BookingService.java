@@ -151,7 +151,7 @@ public class BookingService implements
 
     @Transactional
     public Booking approve(UUID bookingId) {
-        Booking booking = repository.findById(bookingId)
+        Booking booking = repository.findByIdForUpdate(bookingId)
             .orElseThrow(
                 () -> new BookingNotFoundException(bookingId)
             );

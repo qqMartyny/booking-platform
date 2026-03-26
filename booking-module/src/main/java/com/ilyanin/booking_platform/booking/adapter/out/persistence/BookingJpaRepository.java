@@ -34,6 +34,6 @@ public interface BookingJpaRepository extends
     );
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT b FROM BookingJpaRepository b WHERE b.id = :id")
+    @Query("SELECT b FROM BookingJpaEntity b WHERE b.id = :id")
     Optional<BookingJpaEntity> findByIdForUpdate(@Param("id") UUID id);
 }
