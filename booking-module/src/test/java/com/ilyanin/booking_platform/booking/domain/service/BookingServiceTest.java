@@ -74,7 +74,7 @@ public class BookingServiceTest {
 
     @Test
     void shouldCallFindConflicting() {
-        when(repository.findById(any())).thenReturn(Optional.of(BookingFixtures.defaultBooking()));
+        when(repository.findByIdForUpdate(any())).thenReturn(Optional.of(BookingFixtures.defaultBooking()));
         when(repository.findConflicting(any(), any(), any())).thenReturn(new ArrayList<Booking>());
         service.approve(BookingFixtures.BOOKING_ID);
         verify(repository).findConflicting(any(), any(), any());  
