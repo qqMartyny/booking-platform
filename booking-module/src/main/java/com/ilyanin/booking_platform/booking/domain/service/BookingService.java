@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ilyanin.booking_platform.booking.domain.exception.BookingNotFoundException;
 import com.ilyanin.booking_platform.booking.domain.model.Booking;
@@ -49,10 +50,12 @@ public class BookingService implements
         this.roomAvailability = roomAvailability;
     }
 
+    @Transactional(readOnly = true)
     public PageResult<Booking> searchBookings(BookingSearchFilter filter) {
         return repository.findAll(filter);
     }
 
+    @Transactional
     public Booking reject(UUID bookingId) {
         Booking booking = repository.findById(bookingId)
             .orElseThrow(
@@ -66,6 +69,7 @@ public class BookingService implements
         return booking;
     }
 
+    @Transactional(readOnly = true)
     public Booking get(UUID bookingId) {
         Booking booking = repository.findById(bookingId)
             .orElseThrow(
@@ -75,6 +79,7 @@ public class BookingService implements
         return booking;
     }
 
+    @Transactional
     public Booking create(
         UUID guestId, 
         UUID roomId, 
@@ -94,6 +99,7 @@ public class BookingService implements
         return booking;
     }
 
+    @Transactional
     public Booking complete(UUID bookingId) {
         Booking booking = repository.findById(bookingId)
             .orElseThrow(
@@ -107,6 +113,7 @@ public class BookingService implements
         return booking;
     }
 
+    @Transactional
     public Booking changeRequest(UUID bookingId, DateRange newDateRange) {
         Booking booking = repository.findById(bookingId)
             .orElseThrow(
@@ -128,6 +135,7 @@ public class BookingService implements
         return booking;
     }
 
+    @Transactional
     public Booking cancel(UUID bookingId) {
         Booking booking = repository.findById(bookingId)
             .orElseThrow(
@@ -141,6 +149,7 @@ public class BookingService implements
         return booking;
     }
 
+    @Transactional
     public Booking approve(UUID bookingId) {
         Booking booking = repository.findById(bookingId)
             .orElseThrow(
