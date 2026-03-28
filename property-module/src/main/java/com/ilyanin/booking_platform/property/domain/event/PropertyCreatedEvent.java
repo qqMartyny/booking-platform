@@ -23,4 +23,16 @@ public class PropertyCreatedEvent extends DomainEvent {
         this.name = name;
         this.address = address;
     }
+
+    public UUID getHostId() {
+        return hostId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
 }
