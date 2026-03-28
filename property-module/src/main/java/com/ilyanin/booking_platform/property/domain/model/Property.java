@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.ilyanin.booking_platform.property.domain.event.PropertyCreatedEvent;
 import com.ilyanin.booking_platform.shared.Money;
 import com.ilyanin.booking_platform.shared.event.DomainEvent;
 
@@ -12,14 +13,14 @@ public class Property {
 
     private final UUID id;
     private final UUID hostId;
-    private final String name;
-    private final String description;
+    private String name;
+    private String description;
     private final Address address;
-    private final Money pricePerNight;
+    private Money pricePerNight;
     private final boolean instantBook;
     private PropertyStatus status;
     private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
     private final List<DomainEvent> domainEvents = new ArrayList<>();
     
     private Property(
@@ -45,6 +46,44 @@ public class Property {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+    public static Property create(UUID hostId, String name, Address address) {
+
+        if (hostId == null) {
+            throw new IllegalArgumentException("Host id cannot be null");
+        }
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
+        if (address == null) {
+            throw new IllegalArgumentException("Address cannot be null");
+        }
+
+        var id = UUID.randomUUID();
+        var description = "Default description";
+        var pricePerNight = Money.defaultMoney();
+        var instantBook = false;
+        var status = PropertyStatus.DRAFT;
+        var createdAt = LocalDateTime.now();
+        var updatedAt = LocalDateTime.now();
+        var property = new Property(
+            id,
+            hostId,
+            name,
+            description,
+            address,
+            pricePerNight,
+            instantBook,
+            status,
+            createdAt,
+            updatedAt
+        );
+        property.domainEvents.add(new PropertyCreatedEvent(id, hostId, name, address));
+        return property;
+    }
+
+
+
 
     public UUID getId() {
         return id;
