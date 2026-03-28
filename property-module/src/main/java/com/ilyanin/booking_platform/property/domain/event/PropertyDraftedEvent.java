@@ -5,12 +5,12 @@ import java.util.UUID;
 import com.ilyanin.booking_platform.property.domain.model.PropertyStatus;
 import com.ilyanin.booking_platform.shared.event.DomainEvent;
 
-public class PropertyArchivedEvent extends DomainEvent{
+public class PropertyDraftedEvent extends DomainEvent{
 
     private final UUID hostId;
     private final PropertyStatus status;
     
-    public PropertyArchivedEvent(
+    public PropertyDraftedEvent(
         UUID aggregateId, 
         UUID hostId,
         PropertyStatus status

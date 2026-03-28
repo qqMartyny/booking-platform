@@ -6,7 +6,6 @@ import com.ilyanin.booking_platform.property.domain.model.Address;
 import com.ilyanin.booking_platform.shared.event.DomainEvent;
 
 public class PropertyCreatedEvent extends DomainEvent {
-
     
     private final UUID hostId;
     private final String name;
