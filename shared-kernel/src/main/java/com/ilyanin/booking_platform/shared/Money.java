@@ -49,4 +49,8 @@ public record Money(
         } 
         return new Money(result, currency);
     }
+
+    public Money defaultMoney() {
+        return new Money(BigDecimal.valueOf(0), Currency.getInstance("USD"));
+    }
 }
