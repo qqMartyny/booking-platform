@@ -7,8 +7,12 @@ import java.util.UUID;
 
 import com.ilyanin.booking_platform.property.domain.event.PropertyArchivedEvent;
 import com.ilyanin.booking_platform.property.domain.event.PropertyCreatedEvent;
+import com.ilyanin.booking_platform.property.domain.event.PropertyDescriptionSetEvent;
 import com.ilyanin.booking_platform.property.domain.event.PropertyDetailsUpdatedEvent;
 import com.ilyanin.booking_platform.property.domain.event.PropertyDraftedEvent;
+import com.ilyanin.booking_platform.property.domain.event.PropertyInstantBookSetEvent;
+import com.ilyanin.booking_platform.property.domain.event.PropertyNameSetEvent;
+import com.ilyanin.booking_platform.property.domain.event.PropertyPriceSetEvent;
 import com.ilyanin.booking_platform.property.domain.event.PropertyPublishedEvent;
 import com.ilyanin.booking_platform.shared.Money;
 import com.ilyanin.booking_platform.shared.event.DomainEvent;
@@ -51,21 +55,33 @@ public class Property {
         this.updatedAt = updatedAt;
     }
 
+    public static Property reconstitute(
+        UUID id,
+        UUID hostId,
+        String name,
+        String description,
+        Address address,
+        Money pricePerNight,
+        boolean instantBook,
+        PropertyStatus status,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
+    ) {
+        return new Property(
+            id, hostId, name, description, address,
+            pricePerNight, instantBook, status, createdAt, updatedAt
+        );
+    }
+
     public static Property create(UUID hostId, String name, Address address) {
 
-        if (hostId == null) {
-            throw new IllegalArgumentException("Host id cannot be null");
-        }
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
-        }
-        if (address == null) {
-            throw new IllegalArgumentException("Address cannot be null");
-        }
+        validateHostId(hostId);
+        validateName(name);
+        validateAddress(address);
 
         var id = UUID.randomUUID();
-        var description = "Default description";
-        var pricePerNight = Money.defaultMoney();
+        String description = null;
+        Money pricePerNight = null;
         var instantBook = false;
         var status = PropertyStatus.DRAFT;
         var createdAt = LocalDateTime.now();
@@ -88,7 +104,7 @@ public class Property {
 
     public void draft() {
         trasitionTo(PropertyStatus.DRAFT);
-        this.updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
         domainEvents.add(new PropertyDraftedEvent(
             id,
             hostId,
@@ -97,8 +113,13 @@ public class Property {
     }
 
     public void publish() {
+        if (!readyToPublish()) {
+            throw new IllegalArgumentException(
+                "The property is not ready to be published"
+            );
+        }
         trasitionTo(PropertyStatus.PUBLISHED);
-        this.updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
         domainEvents.add(new PropertyPublishedEvent(
             id,
             hostId,
@@ -106,9 +127,18 @@ public class Property {
         ));
     } 
 
+    private boolean readyToPublish() {
+        return 
+            name != null
+            && !name.isBlank()
+            && description != null
+            && !description.isBlank()
+            && pricePerNight != null;
+    }
+
     public void archive() {
         trasitionTo(PropertyStatus.ARCHIVED);
-        this.updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
         domainEvents.add(new PropertyArchivedEvent(
             id,
             hostId,
@@ -125,23 +155,26 @@ public class Property {
         this.status = newStatus;
     }
 
-    public Property updateDetails(
-        Property property,
+    public void updateDetails(
         String newName,
         String newDescription,
         boolean newInstantBook,
-        Money newPricePerNight
+        Money newPrice
     ) {
-        if (!(property.status == (PropertyStatus.DRAFT))) {
+        if (status != (PropertyStatus.DRAFT)) {
             throw new IllegalStateException("Draft property before update");
         }
 
-        property.name = newName;
-        property.description = newDescription;
-        property.instantBook = newInstantBook;
-        property.pricePerNight = newPricePerNight;
+        validateName(newName);
+        validateDescription(newDescription);
+        validatePrice(newPrice);
 
+        this.name = newName;
+        this.description = newDescription;
+        this.instantBook = newInstantBook;
+        this.pricePerNight = newPrice;
         this.updatedAt = LocalDateTime.now();
+
         domainEvents.add(new PropertyDetailsUpdatedEvent(
             id,
             hostId,
@@ -150,7 +183,66 @@ public class Property {
             pricePerNight,
             instantBook
         ));
-        return property;
+    }
+
+    public void setPrice(Money newPrice) {
+        validatePrice(newPrice);
+        this.pricePerNight = newPrice;
+        this.updatedAt = LocalDateTime.now();
+        domainEvents.add(new PropertyPriceSetEvent(id, pricePerNight));
+    }
+
+    public void setName(String newName) {
+        validateName(newName);
+        this.name = newName;
+        this.updatedAt = LocalDateTime.now();
+        domainEvents.add(new PropertyNameSetEvent(id, name));
+    }
+
+    public void setDescription(String newDescription) {
+        validateDescription(newDescription);
+        this.description = newDescription;
+        this.updatedAt = LocalDateTime.now();
+        domainEvents.add(new PropertyDescriptionSetEvent(id, description));
+    }
+
+    public void setInstantBook(boolean newInstantBook) {
+        this.instantBook = newInstantBook;
+        this.updatedAt = LocalDateTime.now();
+        domainEvents.add(new PropertyInstantBookSetEvent(id, instantBook));
+    }
+
+    private static void validateHostId(UUID hostId) {
+        if (hostId == null) {
+            throw new IllegalArgumentException("Host ID cannot be null");
+        }
+    }
+    
+    private static void validateName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Property name cannot be empty");
+        }
+        if (name.length() > 255) {
+            throw new IllegalArgumentException("Property name too long (max 255)");
+        }
+    }
+
+    private static void validateDescription(String description) {
+        if (description == null || description.isBlank()) {
+            throw new IllegalArgumentException("Property description cannot be empty");
+        }
+    }
+    
+    private static void validateAddress(Address address) {
+        if (address == null) {
+            throw new IllegalArgumentException("Property address cannot be null");
+        }
+    }
+    
+    private static void validatePrice(Money price) {
+        if (price == null) {
+            throw new IllegalArgumentException("Price cannot be null");
+        }
     }
 
     public UUID getId() {

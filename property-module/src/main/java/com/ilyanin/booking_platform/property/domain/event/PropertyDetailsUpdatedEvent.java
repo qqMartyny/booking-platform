@@ -10,7 +10,7 @@ public class PropertyDetailsUpdatedEvent extends DomainEvent{
     private final UUID hostId;
     private final String name;
     private final String description;
-    private final Money pricePerNight;
+    private final Money price;
     private final boolean instantBook;
     
     public PropertyDetailsUpdatedEvent(
@@ -18,14 +18,14 @@ public class PropertyDetailsUpdatedEvent extends DomainEvent{
         UUID hostId,
         String name,
         String description,
-        Money pricePerNight,
+        Money price,
         boolean instantBook
     ) {
         super(aggregateId);
         this.hostId = hostId;
         this.name = name;
         this.description = description;
-        this.pricePerNight = pricePerNight;
+        this.price = price;
         this.instantBook = instantBook;
     }
 
@@ -41,12 +41,11 @@ public class PropertyDetailsUpdatedEvent extends DomainEvent{
         return description;
     }
 
-    public Money getPricePerNight() {
-        return pricePerNight;
-    }
-
     public boolean isInstantBook() {
         return instantBook;
     }
 
+    public Money getPrice() {
+        return price;
+    }
 }
