@@ -103,8 +103,8 @@ public class Property {
     }
 
     public void draft() {
-        trasitionTo(PropertyStatus.DRAFT);
-        updatedAt = LocalDateTime.now();
+        transitionTo(PropertyStatus.DRAFT);
+        this.updatedAt = LocalDateTime.now();
         domainEvents.add(new PropertyDraftedEvent(
             id,
             hostId,
@@ -118,8 +118,8 @@ public class Property {
                 "The property is not ready to be published"
             );
         }
-        trasitionTo(PropertyStatus.PUBLISHED);
-        updatedAt = LocalDateTime.now();
+        transitionTo(PropertyStatus.PUBLISHED);
+        this.updatedAt = LocalDateTime.now();
         domainEvents.add(new PropertyPublishedEvent(
             id,
             hostId,
@@ -137,8 +137,8 @@ public class Property {
     }
 
     public void archive() {
-        trasitionTo(PropertyStatus.ARCHIVED);
-        updatedAt = LocalDateTime.now();
+        transitionTo(PropertyStatus.ARCHIVED);
+        this.updatedAt = LocalDateTime.now();
         domainEvents.add(new PropertyArchivedEvent(
             id,
             hostId,
@@ -146,7 +146,7 @@ public class Property {
         ));
     }
 
-    private void trasitionTo(PropertyStatus newStatus) {
+    private void transitionTo(PropertyStatus newStatus) {
         if(!status.canTransitionTo(newStatus)) {
             throw new IllegalStateException(
                 "Cannot transition from " + status + " to " + newStatus
