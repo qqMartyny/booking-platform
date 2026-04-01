@@ -4,6 +4,9 @@ import java.util.UUID;
 
 import com.ilyanin.booking_platform.property.domain.model.Property;
 
-public interface GetPropertyUseCase {
-    Property get(UUID propertyId);
+public interface SetPropertyNameUseCase {
+    Property update(
+        UUID propertyId,
+        String name
+    );
 }

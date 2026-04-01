@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.cglib.core.Local;
-
 import com.ilyanin.booking_platform.property.domain.event.PropertyArchivedEvent;
 import com.ilyanin.booking_platform.property.domain.event.PropertyAvailabilityBlockedEvent;
 import com.ilyanin.booking_platform.property.domain.event.PropertyCreatedEvent;
