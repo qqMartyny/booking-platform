@@ -9,7 +9,7 @@ public record DateRange(
 ){
 
     public DateRange {
-        if (!startDate.isBefore(endDate)) {
+        if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException(
                 "start date can only be before end date\n start date: " 
                 + startDate + " end date: " + endDate

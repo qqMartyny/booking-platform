@@ -1,11 +1,15 @@
 package com.ilyanin.booking_platform.property.domain.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.cglib.core.Local;
+
 import com.ilyanin.booking_platform.property.domain.event.PropertyArchivedEvent;
+import com.ilyanin.booking_platform.property.domain.event.PropertyAvailabilityBlockedEvent;
 import com.ilyanin.booking_platform.property.domain.event.PropertyCreatedEvent;
 import com.ilyanin.booking_platform.property.domain.event.PropertyDescriptionSetEvent;
 import com.ilyanin.booking_platform.property.domain.event.PropertyDetailsUpdatedEvent;
@@ -14,6 +18,7 @@ import com.ilyanin.booking_platform.property.domain.event.PropertyInstantBookSet
 import com.ilyanin.booking_platform.property.domain.event.PropertyNameSetEvent;
 import com.ilyanin.booking_platform.property.domain.event.PropertyPriceSetEvent;
 import com.ilyanin.booking_platform.property.domain.event.PropertyPublishedEvent;
+import com.ilyanin.booking_platform.shared.DateRange;
 import com.ilyanin.booking_platform.shared.Money;
 import com.ilyanin.booking_platform.shared.event.DomainEvent;
 
@@ -100,6 +105,23 @@ public class Property {
         );
         property.domainEvents.add(new PropertyCreatedEvent(id, hostId, name, address));
         return property;
+    }
+
+    public void blockDateRange(DateRange dateRange, String reason) {
+        if (this.status != PropertyStatus.PUBLISHED) {
+            throw new IllegalStateException(
+                "Property has to be published"
+            );
+        }
+        if (dateRange.startDate().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException(
+                "Date in the past cannot be blocked"
+            );
+        }
+
+        this.updatedAt = LocalDateTime.now();
+
+        domainEvents.add(new PropertyAvailabilityBlockedEvent(id, dateRange, reason));
     }
 
     public void draft() {
